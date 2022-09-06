@@ -55,13 +55,17 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from "vue";
+import { reactive, ref, watch } from "vue";
 import type { FormInstance } from "element-plus";
-import 'element-plus/dist/index.css'
+import "element-plus/dist/index.css";
 import { CheckEmail, CheckPassword } from "../../utils/verify";
 import link from "../../api/link";
 import apiUrl from "../../api/url";
 import { ElMessage } from "element-plus";
+import MD5 from "../../hook/index";
+import {useRouter} from "vue-router"
+
+let router = useRouter()
 
 const menuData = reactive([
   { txt: "登录", current: true, type: "login" },
@@ -127,6 +131,27 @@ const ruleForm = reactive({
   confirmPassword: "",
 });
 
+let btnBool = ref(true);
+watch(ruleForm, (newValue, oldValue) => {
+  if (model.value === "login") {
+    if (newValue.email != "" && newValue.password != "") {
+      btnBool.value = false;
+    } else {
+      btnBool.value = true;
+    }
+  } else {
+    if (
+      newValue.email != "" &&
+      newValue.password != "" &&
+      newValue.confirmPassword != ""
+    ) {
+      btnBool.value = false;
+    } else {
+      btnBool.value = true;
+    }
+  }
+});
+
 const rules = reactive({
   email: [{ validator: checkEmail, trigger: "blur" }],
   password: [{ validator: checkPassword, trigger: "blur" }],
@@ -139,12 +164,31 @@ const submitForm = (formEl: FormInstance | undefined) => {
     if (valid) {
       if (model.value === "login") {
         console.log("登录");
+        link(
+          apiUrl.register,
+          "GET",
+          {},
+          { email: ruleForm.email, password: MD5(ruleForm.password).value }
+        ).then((ok:any) => {
+          if(ok.data.length!=0){
+            ElMessage({
+              message: "登录成功",
+              type: "success",
+            });
+            router.push("/home")
+          }else{
+            ElMessage({
+              message: "登录失败",
+              type: "error",
+            });
+          }
+        });
       } else {
         let data = {
           email: ruleForm.email,
-          password: ruleForm.password,
+          password: MD5(ruleForm.password).value,
         };
-        link(apiUrl.register, "POST", data, "").then((ok: any) => {
+        link(apiUrl.register, "POST", data, {}).then((ok: any) => {
           if (Object.keys(ok.data).length !== 0) {
             ElMessage({
               message: "注册成功",
