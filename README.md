@@ -1,24 +1,9 @@
-# property_manage
+简易的后台管理系统（纯前台,用json-server模拟数据交互）
 
-## Project setup
-```
-yarn install
-```
+功能：
+    1.住户管理
+    2.缴费功能（简单的根据输入文本生成二维码）
+    3.数据展示
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
-
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+技术：
+    Vue + Vue Router + Vuex + Element Plus + echarts
