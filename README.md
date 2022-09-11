@@ -6,4 +6,4 @@
     3.数据展示
 
 技术：
-    Vue + Vue Router + Vuex + Element Plus + echarts
+    Vue + Vue Router + Vuex + Element Plus + echarts + TypeScript
