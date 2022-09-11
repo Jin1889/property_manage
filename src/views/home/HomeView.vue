@@ -1,26 +1,33 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-header>Header</el-header>
+      <el-aside width="auto">
+        <LeftMenu />
+      </el-aside>
       <el-container>
-        <el-aside width="200px">Aside</el-aside>
-        <el-main>Main</el-main>
+        <el-header>
+          <RightTop />
+        </el-header>
+        <el-main>
+          <router-view></router-view>
+        </el-main>
       </el-container>
     </el-container>
   </div>
 </template>
 
-<script>
-export default {};
+<script setup>
+import LeftMenu from "../../components/LeftMenu.vue";
+import RightTop from "../../components/RightTop.vue";
 </script>
 
 <style lang="scss">
 .el-aside {
   background-color: #545c64;
 }
-.el-header {
-  // background-color: gold;
-}
+// .el-header {
+//   background-color: gold;
+// }
 .el-main {
   background-color: gainsboro;
 }
